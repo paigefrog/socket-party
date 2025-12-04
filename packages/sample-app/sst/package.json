@@ -1,19 +1,22 @@
 {
-  "name": "e2e",
+  "name": "sst",
   "module": "index.ts",
   "type": "module",
   "private": true,
   "scripts": {
-    "e2e": "bunx playwright test",
-    "e2e:headed": "bunx playwright test --headed"
+    "dev": "bun run --watch index.ts",
+    "e2e": "bun run playwright test",
+    "e2e:headed": "bun run playwright test --headed"
   },
   "devDependencies": {
+    "@types/aws-lambda": "8.10.159",
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
+    "sst": "3.17.24",
     "@playwright/test": "^1.57.0",
     "playwright": "^1.57.0"
   }
