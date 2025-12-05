@@ -7,14 +7,19 @@
     "packages/**/*"
   ],
   "scripts": {
+    "dev": "bun run --watch index.ts",
     "e2e": "bun run playwright test"
   },
   "devDependencies": {
-    "@types/bun": "latest",
     "@playwright/test": "^1.57.0",
+    "@types/aws-lambda": "8.10.159",
+    "@types/bun": "latest",
     "playwright": "^1.57.0"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "sst": "3.17.24"
   }
 }
