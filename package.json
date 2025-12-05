@@ -6,8 +6,13 @@
   "workspaces": [
     "packages/**/*"
   ],
+  "scripts": {
+    "e2e": "bun run playwright test"
+  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@playwright/test": "^1.57.0",
+    "playwright": "^1.57.0"
   },
   "peerDependencies": {
     "typescript": "^5"
