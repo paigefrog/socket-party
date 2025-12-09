@@ -5,11 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build:local": "tsc -b && vite build",
+    "build:dev": "tsc -b && vite build --stage dev",
+    "build:prod": "tsc -b && vite build --stage production",
     "preview": "vite preview"
   },
   "dependencies": {
-    "preact": "^10.27.2"
+    "preact": "^10.27.2",
+    "preact-iso": "^2.11.0"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.2",

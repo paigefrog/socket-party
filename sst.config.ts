@@ -9,5 +9,14 @@ export default $config({
       home: "aws",
     };
   },
-  async run() {},
+  async run() {
+    const staticSite = new sst.aws.StaticSite("MyWeb", {
+      build: {
+        command: `bun run build:dev`,
+        output: "packages/ui/dist",
+      },
+    });
+
+    return { staticSiteUrl: staticSite.url };
+  },
 });

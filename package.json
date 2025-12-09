@@ -7,6 +7,10 @@
     "packages/*"
   ],
   "scripts": {
+    "local": "bun --filter '*' dev",
+    "build:local": "bun --filter '*' build:local",
+    "build:dev": "bun --filter '*' build:dev",
+    "build:prod": "bun --filter '*' build:prod",
     "dev": "bun run sst dev",
     "e2e": "bun run playwright test"
   },
