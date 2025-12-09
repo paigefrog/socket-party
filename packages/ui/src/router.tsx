@@ -1,25 +1,14 @@
-import {
-  LocationProvider,
-  ErrorBoundary,
-  Router,
-  Route,
-  lazy,
-} from "preact-iso";
+import { Routes, Route, BrowserRouter } from "react-router";
 
-const Home = lazy(() => import("./routes/home"));
-const _404 = lazy(() => import("./routes/_404"));
+import * as Pages from "./pages";
 
-const routes = [
-  <Route path="/" component={Home} />,
-  <Route default component={_404} />,
-];
-
-export const TheRouter = () => {
+export const AppRouter = () => {
   return (
-    <LocationProvider>
-      <ErrorBoundary>
-        <Router>{routes}</Router>
-      </ErrorBoundary>
-    </LocationProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route index element={<Pages.Home />} />
+        <Route path="*" element={<Pages.NotFound />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
