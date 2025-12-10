@@ -1,3 +1,9 @@
+import { JoinParty } from "../components/JoinParty";
+
 export const Home = () => {
-  return <h1>Home</h1>;
+  return (
+    <>
+      <JoinParty />
+    </>
+  );
 };
