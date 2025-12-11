@@ -3,8 +3,8 @@ import { Elysia } from "elysia";
 import { Server } from "socket.io";
 
 const io = new Server();
-const engine = new Engine({ path: "/socket.io/" });
-io.bind(engine);
+const ioBunEngine = new Engine({ path: "/socket.io/" });
+io.bind(ioBunEngine);
 
 io.on("connection", (socket) => {
   console.log("connection", socket.id);
@@ -13,7 +13,7 @@ io.on("connection", (socket) => {
 const app = new Elysia()
   .all("/socket.io/*", ({ request, server }) => {
     if (!server) throw new Error("Server not found");
-    return engine.handleRequest(request, server);
+    return ioBunEngine.handleRequest(request, server);
   })
   .get("/", () => "Hello Elysia")
   .listen(3000);
