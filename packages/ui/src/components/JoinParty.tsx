@@ -6,17 +6,18 @@ export const JoinParty = () => {
   const [name, setName] = useState("");
 
   const disableJoinButton = useMemo(() => {
-    return partyCode.trim().length === 0 || name.trim().length === 0;
+    const noPartyCode = partyCode.trim().length === 0;
+    const noName = name.trim().length === 0;
+    return noPartyCode || noName;
   }, [partyCode, name]);
 
   function handleJoinParty() {
-    // Implement join party logic here
     console.log(`Joining party ${partyCode} as ${name}`);
   }
 
   return (
     <Flex
-      width="100dvw"
+      width="100%"
       height="100dvh"
       direction="column"
       align="center"

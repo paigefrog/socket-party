@@ -10,7 +10,7 @@ export default $config({
     };
   },
   async run() {
-    const staticSite = new sst.aws.StaticSite("MyWeb", {
+    const staticSite = new sst.aws.StaticSite("SocketPartySite", {
       build: {
         command: `bun run build:dev`,
         output: "packages/ui/dist",
