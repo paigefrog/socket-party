@@ -13,7 +13,6 @@ const app = new Elysia()
   })
   .listen(3000);
 
-app.onStart(({ server }) => {
-  if (!server) throw new Error("Server not found");
-  console.log(`🦊 Elysia is running at ${server.hostname}:${server.port}`);
-});
+console.log(
+  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
+);
