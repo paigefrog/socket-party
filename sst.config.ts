@@ -24,9 +24,19 @@ export default $config({
 
     const vpc = new sst.aws.Vpc("SocketPartyVpc");
 
+    const xstateEventQueueHandler = new sst.aws.Function(
+      "XstateEventQueueHandler",
+      {
+        runtime: "nodejs22.x",
+        handler: "packages/queue/dist/index.handler",
+        vpc,
+      }
+    );
+
     const xstateEventQueue = new sst.aws.Queue("XstateEventQueue", {
       fifo: true,
     });
+    xstateEventQueue.subscribe(xstateEventQueueHandler.arn);
 
     const socketIoRedis = new sst.aws.Redis("SocketIoRedis", {
       cluster: false,
