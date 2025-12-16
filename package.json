@@ -7,10 +7,13 @@
     "packages/*"
   ],
   "scripts": {
-    "local": "bun --filter '*' dev",
     "build": "bun --filter '*' build",
     "dev": "bun run sst dev",
-    "dev:remove": "bun run sst remove",
+    "deploy:staging": "bun run sst deploy --stage staging",
+    "deploy:prod": "bun run sst deploy --stage prod",
+    "remove:dev": "bun run sst remove",
+    "remove:staging": "bun run sst remove --stage staging",
+    "remove:prod": "bun run sst remove --stage prod",
     "e2e": "bun run playwright test"
   },
   "devDependencies": {

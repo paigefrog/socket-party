@@ -5,6 +5,15 @@
 
 declare module "sst" {
   export interface Resource {
+    "ApiService": {
+      "service": string
+      "type": "sst.aws.Service"
+      "url": string
+    }
+    "GameStateTable": {
+      "name": string
+      "type": "sst.aws.Dynamo"
+    }
     "SocketIoRedis": {
       "host": string
       "password": string

@@ -15,14 +15,23 @@ export default $config({
     };
   },
   async run() {
-    const vpc = new sst.aws.Vpc("SocketPartyVpc");
-
     const staticSite = new sst.aws.StaticSite("Ui", {
       build: {
-        command: `bun run --filter "ui" build`,
+        command: "bun run --filter 'ui' build",
         output: "packages/ui/dist",
       },
-      domain: "socketparty.com",
+      dev: {
+        command: "bun run --filter 'ui' dev",
+        url: "http://localhost:5173",
+      },
+    });
+
+    const vpc = new sst.aws.Vpc("SocketPartyVpc");
+
+    new sst.aws.Dynamo("GameStateTable", {
+      fields: { partyId: "string" },
+      primaryIndex: { hashKey: "partyId" },
+      ttl: "expireAt",
     });
 
     const xstateQueue = new sst.aws.Queue("XstateQueue", {
@@ -30,7 +39,8 @@ export default $config({
     });
     const xstateQueueHandler = new sst.aws.Function("XstateQueueHandler", {
       runtime: "nodejs22.x",
-      handler: "packages/queue/dist/index.handler",
+      bundle: "packages/queue/dist",
+      handler: "index.handler",
       vpc,
       link: [xstateQueue],
     });
@@ -43,22 +53,25 @@ export default $config({
       vpc,
     });
 
-    // const cluster = new sst.aws.Cluster("ApiCluster", { vpc });
-    // const service = new sst.aws.Service("ApiService", {
-    //   cluster,
-    //   cpu: "0.25 vCPU",
-    //   image: {
-    //     context: "packages/api",
-    //     dockerfile: "Dockerfile",
-    //   },
-    //   memory: "0.5 GB",
-    //   link: [xstateQueue, socketIoRedis],
-    //   loadBalancer: {
-    //     domain: `api.${staticSite.url}`,
-    //     ports: [{ listen: "80/http", forward: "3000/http" }],
-    //   },
-    //   scaling: { min: 0, max: 4 },
-    // });
+    const apiCluster = new sst.aws.Cluster("ApiCluster", { vpc });
+    const apiService = new sst.aws.Service("ApiService", {
+      cluster: apiCluster,
+      cpu: "0.25 vCPU",
+      dev: {
+        command: "bun run --filter 'api' dev",
+        url: "http://localhost:3000",
+      },
+      image: {
+        context: "packages/api",
+        dockerfile: "Dockerfile",
+      },
+      memory: "0.5 GB",
+      link: [xstateQueue, socketIoRedis],
+      loadBalancer: {
+        ports: [{ listen: "80/http", forward: "3000/http" }],
+      },
+      scaling: { min: 0, max: 2 },
+    });
 
     return {
       staticSiteUrl: staticSite.url,

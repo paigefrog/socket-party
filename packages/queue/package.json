@@ -4,13 +4,16 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir ./dist",
+    "build": "bun build ./src/index.ts --outdir ./dist --sourcemap --format cjs",
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
-    "xstate": "^5.25.0"
+    "@aws-sdk/client-dynamodb": "^3.952.0",
+    "xstate": "^5.25.0",
+    "zod": "^4.2.1"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.159",
     "@types/bun": "latest"
   },
   "peerDependencies": {
