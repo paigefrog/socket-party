@@ -7,6 +7,9 @@
     "build": "bun build ./src/index.ts --outdir ./dist",
     "dev": "bun run --watch src/index.ts"
   },
+  "dependencies": {
+    "xstate": "^5.25.0"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

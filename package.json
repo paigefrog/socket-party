@@ -10,6 +10,7 @@
     "local": "bun --filter '*' dev",
     "build": "bun --filter '*' build",
     "dev": "bun run sst dev",
+    "dev:remove": "bun run sst remove",
     "e2e": "bun run playwright test"
   },
   "devDependencies": {

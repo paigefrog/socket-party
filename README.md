@@ -18,3 +18,8 @@ todo
    ```bash
    bun install
    ```
+
+2. Install sst tunnel for VPC connection (using "PATH" reference to solve non-sudo bun install)
+   ```bash
+   sudo env "PATH=$PATH" bun sst tunnel install
+   ```
