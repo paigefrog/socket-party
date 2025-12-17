@@ -15,7 +15,7 @@ export default $config({
     };
   },
   async run() {
-    const staticSite = new sst.aws.StaticSite("Ui", {
+    const staticSite = new sst.aws.StaticSite("UiSite", {
       build: {
         command: "bun run --filter 'ui' build",
         output: "packages/ui/dist",

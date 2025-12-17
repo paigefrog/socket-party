@@ -26,6 +26,8 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "sst": "3.17.24"
+    "sst": "3.17.24",
+    "xstate": "^5.25.0",
+    "zod": "^4.2.1"
   }
 }

@@ -24,7 +24,7 @@ declare module "sst" {
     "SocketPartyVpc": {
       "type": "sst.aws.Vpc"
     }
-    "Ui": {
+    "UiSite": {
       "type": "sst.aws.StaticSite"
       "url": string
     }
