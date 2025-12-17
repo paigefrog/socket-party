@@ -1,7 +1,7 @@
-import Elysia from "elysia";
-
 import { initDdbService } from "./ddb.service";
 import { initPartyService } from "./party.service";
+
+import Elysia from "elysia";
 
 const ddbService = initDdbService();
 

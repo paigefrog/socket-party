@@ -1,5 +1,5 @@
-import Elysia from "elysia";
 import { servicesPlugin } from "@services";
+import Elysia from "elysia";
 
 export const partyController = new Elysia({ prefix: "/party" })
   .use(servicesPlugin)

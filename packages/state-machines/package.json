@@ -3,6 +3,9 @@
   "module": "./src/index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "lint": "eslint ."
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

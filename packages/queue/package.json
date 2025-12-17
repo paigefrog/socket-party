@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "build": "bun build ./src/index.ts --outdir ./dist --sourcemap --format cjs",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --watch src/index.ts",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.953.0"
