@@ -1,4 +1,3 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DdbService } from "./ddb.service";
 
 export type PartyServiceDeps = {
@@ -12,8 +11,13 @@ export const initPartyService = (deps: PartyServiceDeps) => {
     return { message: "Party created" };
   }
 
+  async function getById(id: string) {
+    return { message: "get by id" };
+  }
+
   return {
     create,
+    getById,
   };
 };
 
