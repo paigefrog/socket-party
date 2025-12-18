@@ -17,11 +17,11 @@ export default $config({
   async run() {
     const staticSite = new sst.aws.StaticSite("UiSite", {
       build: {
-        command: "bun run --filter 'ui' build",
+        command: "bun run --filter '@socket-party/ui' build",
         output: "packages/ui/dist",
       },
       dev: {
-        command: "bun run --filter 'ui' dev",
+        command: "bun run --filter '@socket-party/ui' dev",
         url: "http://localhost:5173",
       },
     });
@@ -29,9 +29,9 @@ export default $config({
     const vpc = new sst.aws.Vpc("SocketPartyVpc");
 
     new sst.aws.Dynamo("GameStateTable", {
-      fields: { partyId: "string" },
-      primaryIndex: { hashKey: "partyId" },
-      ttl: "expireAt",
+      fields: { id: "string" },
+      primaryIndex: { hashKey: "id" },
+      ttl: "expiresAt",
     });
 
     const xstateQueue = new sst.aws.Queue("XstateQueue", {
@@ -58,7 +58,7 @@ export default $config({
       cluster: apiCluster,
       cpu: "0.25 vCPU",
       dev: {
-        command: "bun run --filter 'api' dev",
+        command: "bun run --filter '@socket-party/api' dev",
         url: "http://localhost:3000",
       },
       image: {
@@ -74,6 +74,7 @@ export default $config({
     });
 
     return {
+      apiServiceUrl: apiService.url,
       staticSiteUrl: staticSite.url,
       socketIoRedis: socketIoRedis.clusterId,
       xstateQueue: xstateQueue.arn,

@@ -1,5 +1,5 @@
 {
-  "name": "ui",
+  "name": "@socket-party/ui",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -16,6 +16,7 @@
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/react-fontawesome": "^3.1.1",
     "@radix-ui/themes": "^3.2.1",
+    "@socket-party/shared": "workspace:*",
     "@xstate/react": "^6.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

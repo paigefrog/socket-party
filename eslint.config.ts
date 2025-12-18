@@ -11,5 +11,10 @@ export default defineConfig([
     extends: ["js/recommended"],
     languageOptions: { globals: globals.browser },
   },
-  tseslint.configs.recommended,
+  {
+    extends: [tseslint.configs.recommended],
+    rules: {
+      "@typescript-eslint/triple-slash-reference": "off", // Disabled for sst config
+    },
+  },
 ]);

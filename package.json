@@ -9,10 +9,8 @@
   "scripts": {
     "build": "bun --filter '*' build",
     "dev": "bun run sst dev",
-    "deploy:staging": "bun run sst deploy --stage staging",
     "deploy:prod": "bun run sst deploy --stage prod",
     "remove:dev": "bun run sst remove",
-    "remove:staging": "bun run sst remove --stage staging",
     "remove:prod": "bun run sst remove --stage prod",
     "lint": "bun --filter '*' build",
     "e2e": "bun run playwright test"

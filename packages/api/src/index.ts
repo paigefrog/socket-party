@@ -1,8 +1,8 @@
-import { partyController } from "@controllers";
 import { Server as Engine } from "@socket.io/bun-engine";
 import { Elysia } from "elysia";
 import { Server } from "socket.io";
 
+import { partyController } from "@/controllers";
 
 const io = new Server();
 const ioBunEngine = new Engine({ path: "/socket.io/" });

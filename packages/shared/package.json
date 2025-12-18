@@ -1,5 +1,5 @@
 {
-  "name": "state-machines",
+  "name": "@socket-party/shared",
   "module": "./src/index.ts",
   "type": "module",
   "private": true,
