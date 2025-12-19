@@ -52,7 +52,7 @@ export default $config({
     });
     xstateQueue.subscribe(xstateQueueHandler.arn);
 
-    const socketIoRedis = new sst.aws.Redis("SocketIoRedis", {
+    const ioRedis = new sst.aws.Redis("IoRedis", {
       cluster: false,
       engine: "valkey",
       instance: "t4g.micro",
@@ -72,7 +72,7 @@ export default $config({
         dockerfile: "Dockerfile",
       },
       memory: "0.5 GB",
-      link: [socketIoRedis, xstateQueue],
+      link: [ioRedis, xstateQueue],
       loadBalancer: {
         ports: [{ listen: "80/http", forward: "3000/http" }],
       },
@@ -82,9 +82,6 @@ export default $config({
     return {
       apiServiceUrl: apiService.url,
       staticSiteUrl: staticSite.url,
-      socketIoRedisUrl: socketIoRedis.host + ":" + socketIoRedis.port,
-      xstateQueue: xstateQueue.arn,
-      xstateQueueHandler: xstateQueueHandler.arn,
     };
   },
 });

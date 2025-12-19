@@ -1,18 +1,15 @@
-import { Server as Engine } from "@socket.io/bun-engine";
 import { Elysia } from "elysia";
-import { Server } from "socket.io";
 
 import { partyController } from "@/controllers";
-
-const io = new Server();
-const ioBunEngine = new Engine({ path: "/socket.io/" });
-io.bind(ioBunEngine);
+import { servicesPlugin } from "@/services";
 
 const app = new Elysia()
+  .use(servicesPlugin)
   .use(partyController)
-  .all("/socket.io/*", ({ request, server }) => {
-    if (!server) throw new Error("Server not found");
-    return ioBunEngine.handleRequest(request, server);
+  .all("/socket.io/*", ({ request, server, services }) => {
+    if (server === null) throw new Error("Server is null");
+    const { ioService } = services;
+    return ioService.ioBunEngine.handleRequest(request, server);
   })
   .listen(3000);
 

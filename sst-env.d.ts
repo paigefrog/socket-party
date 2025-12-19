@@ -10,6 +10,13 @@ declare module "sst" {
       "type": "sst.aws.Service"
       "url": string
     }
+    "IoRedis": {
+      "host": string
+      "password": string
+      "port": number
+      "type": "sst.aws.Redis"
+      "username": string
+    }
     "PartyCodeTable": {
       "name": string
       "type": "sst.aws.Dynamo"
@@ -17,13 +24,6 @@ declare module "sst" {
     "PartyTable": {
       "name": string
       "type": "sst.aws.Dynamo"
-    }
-    "SocketIoRedis": {
-      "host": string
-      "password": string
-      "port": number
-      "type": "sst.aws.Redis"
-      "username": string
     }
     "SocketPartyVpc": {
       "type": "sst.aws.Vpc"
