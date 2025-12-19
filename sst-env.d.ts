@@ -10,7 +10,11 @@ declare module "sst" {
       "type": "sst.aws.Service"
       "url": string
     }
-    "GameStateTable": {
+    "PartyCodeTable": {
+      "name": string
+      "type": "sst.aws.Dynamo"
+    }
+    "PartyTable": {
       "name": string
       "type": "sst.aws.Dynamo"
     }

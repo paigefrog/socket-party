@@ -7,22 +7,22 @@ import { hoursToSeconds } from "date-fns";
 import { TableSchemas } from "@socket-party/shared/src/types";
 import { getExpiresAt } from "@socket-party/shared/src/utils";
 
-export type PartyServiceDeps = {
+export type PartyCodeServiceDeps = {
   ddbService: DdbService;
 };
 
-export const initPartyService = (deps: PartyServiceDeps) => {
+export const initPartyCodeService = (deps: PartyCodeServiceDeps) => {
   const { ddbService } = deps;
 
   async function create() {
-    const partyId = randomUUID();
+    const partyCode = randomUUID();
     const createdAt = new Date().toISOString();
     const expiresAt = getExpiresAt(hoursToSeconds(6));
 
     const command = new PutItemCommand({
-      TableName: Resource.PartyTable.name,
+      TableName: Resource.PartyCodeTable.name,
       Item: {
-        partyId: { S: partyId },
+        partyCode: { S: partyCode },
         createdAt: { S: createdAt },
         expiresAt: { N: expiresAt.toString() },
       },
@@ -30,20 +30,20 @@ export const initPartyService = (deps: PartyServiceDeps) => {
 
     await ddbService.client.send(command);
 
-    return TableSchemas.zParty.parse({
-      partyId,
+    return TableSchemas.zPartyCode.parse({
+      partyCode,
       createdAt,
       expiresAt,
       actorSnapshot: {},
     });
   }
 
-  async function getByPartyId(
-    partyId: string
+  async function getByPartyCode(
+    partyCode: string
   ): Promise<TableSchemas.Party | null> {
     const command = new GetItemCommand({
-      TableName: Resource.PartyTable.name,
-      Key: { partyId: { S: partyId } },
+      TableName: Resource.PartyCodeTable.name,
+      Key: { partyCode: { S: partyCode } },
     });
 
     const result = await ddbService.client.send(command);
@@ -54,8 +54,8 @@ export const initPartyService = (deps: PartyServiceDeps) => {
 
   return {
     create,
-    getByPartyId,
+    getByPartyCode,
   };
 };
 
-export type PartyService = ReturnType<typeof initPartyService>;
+export type PartyCodeService = ReturnType<typeof initPartyCodeService>;

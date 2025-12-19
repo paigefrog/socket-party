@@ -27,16 +27,22 @@ export default $config({
     });
 
     const vpc = new sst.aws.Vpc("SocketPartyVpc");
+    new sst.aws.Dynamo("PartyTable", {
+      fields: { partyId: "string" },
+      primaryIndex: { hashKey: "partyId" },
+      ttl: "expiresAt",
+    });
 
-    new sst.aws.Dynamo("GameStateTable", {
-      fields: { id: "string" },
-      primaryIndex: { hashKey: "id" },
+    new sst.aws.Dynamo("PartyCodeTable", {
+      fields: { partyCode: "string" },
+      primaryIndex: { hashKey: "partyCode" },
       ttl: "expiresAt",
     });
 
     const xstateQueue = new sst.aws.Queue("XstateQueue", {
       fifo: true,
     });
+
     const xstateQueueHandler = new sst.aws.Function("XstateQueueHandler", {
       runtime: "nodejs22.x",
       bundle: "packages/queue/dist",
@@ -66,7 +72,7 @@ export default $config({
         dockerfile: "Dockerfile",
       },
       memory: "0.5 GB",
-      link: [xstateQueue, socketIoRedis],
+      link: [socketIoRedis, xstateQueue],
       loadBalancer: {
         ports: [{ listen: "80/http", forward: "3000/http" }],
       },
@@ -76,7 +82,7 @@ export default $config({
     return {
       apiServiceUrl: apiService.url,
       staticSiteUrl: staticSite.url,
-      socketIoRedis: socketIoRedis.clusterId,
+      socketIoRedisUrl: socketIoRedis.host + ":" + socketIoRedis.port,
       xstateQueue: xstateQueue.arn,
       xstateQueueHandler: xstateQueueHandler.arn,
     };

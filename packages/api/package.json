@@ -8,10 +8,12 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.953.0",
-    "@socket.io/bun-engine": "^0.1.0",
     "@socket-party/shared": "workspace:*",
+    "@socket.io/bun-engine": "^0.1.0",
+    "@socket.io/redis-streams-adapter": "^0.2.3",
     "date-fns": "^4.1.0",
     "elysia": "latest",
+    "ioredis": "^5.8.2",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
