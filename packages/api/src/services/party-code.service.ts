@@ -1,40 +1,69 @@
 import { GetItemCommand, PutItemCommand } from "@aws-sdk/client-dynamodb";
-import type { DdbService } from "./ddb.service";
+import { hoursToSeconds } from "date-fns";
 import { randomUUID } from "node:crypto";
 import { Resource } from "sst";
-import { hoursToSeconds } from "date-fns";
 
 import { TableSchemas } from "@socket-party/shared/src/types";
 import { getExpiresAt } from "@socket-party/shared/src/utils";
 
+import type { DdbService } from "./ddb.service";
+import type { ObscenityService } from "./obscenity.service";
+
 export type PartyCodeServiceDeps = {
   ddbService: DdbService;
+  obscenityService: ObscenityService;
 };
 
 export const initPartyCodeService = (deps: PartyCodeServiceDeps) => {
-  const { ddbService } = deps;
+  const { ddbService, obscenityService } = deps;
+
+  const PARTY_CODE_LENGTH = 5;
+  const PARTY_CODE_TTL = hoursToSeconds(3);
+  const tableName = Resource.PartyCodeTable.name;
+
+  function generatePartyCode(length: number): string {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let partyCode = "";
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      partyCode += characters[randomIndex];
+    }
+
+    // Regenerate if the code contains obscene words
+    if (obscenityService.matcher.hasMatch(partyCode)) {
+      return generatePartyCode(length);
+    }
+
+    return partyCode;
+  }
 
   async function create() {
-    const partyCode = randomUUID();
     const createdAt = new Date().toISOString();
-    const expiresAt = getExpiresAt(hoursToSeconds(6));
+    const expiresAt = getExpiresAt(PARTY_CODE_TTL);
+    const partyId = randomUUID();
+
+    let partyCode = generatePartyCode(PARTY_CODE_LENGTH);
+    while ((await getByPartyCode(partyCode)) !== null) {
+      partyCode = generatePartyCode(PARTY_CODE_LENGTH);
+    }
 
     const command = new PutItemCommand({
-      TableName: Resource.PartyCodeTable.name,
+      TableName: tableName,
       Item: {
-        partyCode: { S: partyCode },
         createdAt: { S: createdAt },
         expiresAt: { N: expiresAt.toString() },
+        partyCode: { S: partyCode },
+        partyId: { S: partyId },
       },
     });
 
     await ddbService.client.send(command);
 
     return TableSchemas.zPartyCode.parse({
-      partyCode,
       createdAt,
       expiresAt,
-      actorSnapshot: {},
+      partyCode,
+      partyId,
     });
   }
 
@@ -42,7 +71,7 @@ export const initPartyCodeService = (deps: PartyCodeServiceDeps) => {
     partyCode: string
   ): Promise<TableSchemas.Party | null> {
     const command = new GetItemCommand({
-      TableName: Resource.PartyCodeTable.name,
+      TableName: tableName,
       Key: { partyCode: { S: partyCode } },
     });
 

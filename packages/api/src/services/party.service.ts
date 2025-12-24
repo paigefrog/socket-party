@@ -14,13 +14,16 @@ export type PartyServiceDeps = {
 export const initPartyService = (deps: PartyServiceDeps) => {
   const { ddbService } = deps;
 
+  const PARTY_TTL = hoursToSeconds(3);
+  const tableName = Resource.PartyTable.name;
+
   async function create() {
     const partyId = randomUUID();
     const createdAt = new Date().toISOString();
-    const expiresAt = getExpiresAt(hoursToSeconds(6));
+    const expiresAt = getExpiresAt(PARTY_TTL);
 
     const command = new PutItemCommand({
-      TableName: Resource.PartyTable.name,
+      TableName: tableName,
       Item: {
         partyId: { S: partyId },
         createdAt: { S: createdAt },
@@ -42,7 +45,7 @@ export const initPartyService = (deps: PartyServiceDeps) => {
     partyId: string
   ): Promise<TableSchemas.Party | null> {
     const command = new GetItemCommand({
-      TableName: Resource.PartyTable.name,
+      TableName: tableName,
       Key: { partyId: { S: partyId } },
     });
 
