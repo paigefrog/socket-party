@@ -1,6 +1,5 @@
 import { GetItemCommand, PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { hoursToSeconds } from "date-fns";
-import { randomUUID } from "node:crypto";
 import { Resource } from "sst";
 
 import { TableSchemas } from "@socket-party/shared/src/types";
@@ -37,10 +36,9 @@ export const initPartyCodeService = (deps: PartyCodeServiceDeps) => {
     return partyCode;
   }
 
-  async function create() {
+  async function create(partyId: string) {
     const createdAt = new Date().toISOString();
     const expiresAt = getExpiresAt(PARTY_CODE_TTL);
-    const partyId = randomUUID();
 
     let partyCode = generatePartyCode(PARTY_CODE_LENGTH);
     while ((await getByPartyCode(partyCode)) !== null) {

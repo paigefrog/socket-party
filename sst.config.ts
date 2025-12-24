@@ -27,13 +27,14 @@ export default $config({
     });
 
     const vpc = new sst.aws.Vpc("SocketPartyVpc");
-    new sst.aws.Dynamo("PartyTable", {
+
+    const partyTable = new sst.aws.Dynamo("PartyTable", {
       fields: { partyId: "string" },
       primaryIndex: { hashKey: "partyId" },
       ttl: "expiresAt",
     });
 
-    new sst.aws.Dynamo("PartyCodeTable", {
+    const partyCodeTable = new sst.aws.Dynamo("PartyCodeTable", {
       fields: { partyCode: "string" },
       primaryIndex: { hashKey: "partyCode" },
       ttl: "expiresAt",
@@ -48,7 +49,7 @@ export default $config({
       bundle: "packages/queue/dist",
       handler: "index.handler",
       vpc,
-      link: [xstateQueue],
+      link: [xstateQueue, partyTable],
     });
     xstateQueue.subscribe(xstateQueueHandler.arn);
 
@@ -72,7 +73,7 @@ export default $config({
         dockerfile: "Dockerfile",
       },
       memory: "0.5 GB",
-      link: [ioRedis, xstateQueue],
+      link: [ioRedis, xstateQueue, partyTable, partyCodeTable],
       loadBalancer: {
         ports: [{ listen: "80/http", forward: "3000/http" }],
       },

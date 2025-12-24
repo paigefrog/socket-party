@@ -5,10 +5,12 @@ import { servicesPlugin } from "@/services";
 export const partyController = new Elysia({ prefix: "/party" })
   .use(servicesPlugin)
   .post("/", async (ctx) => {
-    const { partyService } = ctx.services;
+    const { partyService, partyCodeService } = ctx.services;
 
     try {
-      await partyService.create();
+      const { partyId } = await partyService.create();
+      const { partyCode } = await partyCodeService.create(partyId);
+      return { partyId, partyCode };
     } catch (error) {
       console.error("Error creating party:", error);
       throw new Error("Failed to create party");
