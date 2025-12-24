@@ -26,6 +26,7 @@ declare module "sst" {
       "type": "sst.aws.Dynamo"
     }
     "SocketPartyVpc": {
+      "bastion": string
       "type": "sst.aws.Vpc"
     }
     "UiSite": {

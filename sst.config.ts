@@ -14,6 +14,7 @@ export default $config({
       },
     };
   },
+
   async run() {
     const staticSite = new sst.aws.StaticSite("UiSite", {
       build: {
@@ -26,7 +27,9 @@ export default $config({
       },
     });
 
-    const vpc = new sst.aws.Vpc("SocketPartyVpc");
+    const vpc = new sst.aws.Vpc("SocketPartyVpc", {
+      bastion: true, // Required for SSH tunnel connection, creates a t4g.micro
+    });
 
     const partyTable = new sst.aws.Dynamo("PartyTable", {
       fields: { partyId: "string" },
