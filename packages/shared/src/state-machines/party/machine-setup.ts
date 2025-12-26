@@ -33,7 +33,11 @@ export type Events =
 
 export type Emitted =
   | { type: "player.joined"; player: Player }
-  | { type: "spectator.joined"; spectator: Spectator };
+  | { type: "player.disconnected"; player: Player }
+  | { type: "player.reconnected"; player: Player }
+  | { type: "spectator.joined"; spectator: Spectator }
+  | { type: "spectator.disconnected"; spectator: Spectator }
+  | { type: "spectator.reconnected"; spectator: Spectator };
 
 export const machineSetup = setup({
   types: {
@@ -59,6 +63,7 @@ export const machineSetup = setup({
     isPlayerLimitReached: ({ context }) => {
       return context.players.length >= context.maxPlayers;
     },
+
     isSpectatorLimitReached: ({ context }) => {
       return context.spectators.length >= context.maxSpectators;
     },
