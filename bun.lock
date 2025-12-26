@@ -47,10 +47,6 @@
     },
     "packages/queue": {
       "name": "@socket-party/queue",
-      "dependencies": {
-        "@aws-sdk/client-dynamodb": "^3.953.0",
-        "@socket-party/shared": "workspace:*",
-      },
       "devDependencies": {
         "@types/aws-lambda": "^8.10.159",
         "@types/bun": "latest",
