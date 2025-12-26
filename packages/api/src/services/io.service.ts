@@ -20,7 +20,12 @@ export const initIoService = () => {
   const ioBunEngine = new Engine({ path: "/socket.io/" });
   io.bind(ioBunEngine);
 
+  function createNamespace(namespace: string) {
+    return io.of(namespace);
+  }
+
   return {
+    createNamespace,
     io,
     ioBunEngine,
   };
