@@ -8,10 +8,7 @@
     "dev": "bun run --watch src/index.ts",
     "lint": "eslint ."
   },
-  "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.953.0",
-    "@socket-party/shared": "workspace:*"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/aws-lambda": "^8.10.159",
     "@types/bun": "latest"
